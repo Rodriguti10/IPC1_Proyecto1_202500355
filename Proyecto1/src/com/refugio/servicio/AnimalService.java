@@ -4,7 +4,7 @@ import com.refugio.modelo.Animal;
 
 /**
  * Maneja el arreglo estatico de Animales.
- * Regla clave: no se elimina fisicamente, solo baja logica (estadoAdopcion = ELIMINADO).
+ * Regla clave: no se elimina fisicamente, solo baja logica
  */
 public class AnimalService {
     public static final int MAX_ANIMALES = 50;
@@ -31,12 +31,13 @@ public class AnimalService {
         } catch (Exception e) { /* codigo con formato distinto, se ignora */ }
     }
 
-    /** Registra un animal con un codigo especifico (permite reutilizar codigo de un Rescate). */
+    /** Registra un animal con un codigo especifico (permite reutilizar código de un Rescate). */
     public boolean registrarConCodigo(String codigo, String nombre, String especie, int edad,
                                        String estadoClinico, String usuario) {
         if (cantidad >= MAX_ANIMALES) return false;
         if (codigo == null || existeCodigo(codigo)) return false;
         if (nombre == null || nombre.trim().isEmpty()) return false;
+        if (!nombre.trim().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) return false;
         if (!especie.equals("Perro") && !especie.equals("Gato")) return false;
         if (edad < 0 || edad > 25) return false;
         animales[cantidad] = new Animal(codigo, nombre, especie, edad, estadoClinico, "DISPONIBLE");

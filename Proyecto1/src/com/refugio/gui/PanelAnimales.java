@@ -75,6 +75,11 @@ public class PanelAnimales extends JPanel {
             JOptionPane.showMessageDialog(this, "Complete todos los campos.");
             return;
         }
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            ContextoApp.bitacora.registrarError(ContextoApp.usuarioActual, "ANIMALES", "VALIDACION", "Nombre con caracteres invalidos: " + nombre);
+            JOptionPane.showMessageDialog(this, "El nombre del animal solo puede contener letras y espacios.");
+            return;
+        }
         int edad;
         try {
             edad = Integer.parseInt(edadTexto);
