@@ -35,6 +35,17 @@ public class SolicitudService {
                 return true;
         return false;
     }
+    
+    public boolean existeSolicitudPendiente(String codigoAnimal, String codigoAdoptante) {
+    for (int i = 0; i < cantidad; i++) {
+        if (solicitudes[i].getCodigoAnimal().equalsIgnoreCase(codigoAnimal)
+            && solicitudes[i].getCodigoAdoptante().equalsIgnoreCase(codigoAdoptante)
+            && solicitudes[i].getEstado().equals("PENDIENTE")) {
+            return true;
+        }
+    }
+    return false;
+}
 
     public boolean aprobar(String codigo) {
         Solicitud s = buscarPorCodigo(codigo);

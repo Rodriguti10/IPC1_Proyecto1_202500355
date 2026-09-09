@@ -77,6 +77,12 @@ public class PanelSolicitudes extends JPanel {
             JOptionPane.showMessageDialog(this, "El animal no está disponible para adopción.");
             return;
         }
+        if (ContextoApp.solicitudService.existeSolicitudPendiente(codAnimal, codAdoptante)) {
+            ContextoApp.bitacora.registrarError(ContextoApp.usuarioActual, "SOLICITUDES", "VALIDACION",
+            "Ya existe una solicitud pendiente de " + codAdoptante + " para " + codAnimal);
+            JOptionPane.showMessageDialog(this, "Este adoptante ya tiene una solicitud pendiente para este animal.");
+            return;
+}
         String fecha = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         boolean ok = ContextoApp.solicitudService.registrar(codAnimal, codAdoptante, fecha);
         if (ok) {
