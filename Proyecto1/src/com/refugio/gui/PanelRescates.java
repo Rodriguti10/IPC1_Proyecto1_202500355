@@ -70,8 +70,13 @@ public class PanelRescates extends JPanel {
         String codigo = JOptionPane.showInputDialog(this, "Código de rescate a atender (ej. R-001):");
         if (codigo == null) return;
         Rescate r = ContextoApp.rescateService.buscarPorCodigo(codigo.trim());
-        if (r == null) { JOptionPane.showMessageDialog(this, "No existe."); return; }
-
+        if (r == null) { JOptionPane.showMessageDialog(this, "No existe."); 
+        return; 
+        }
+        if (r.getEstado().equals("ATENDIDO")) {
+        JOptionPane.showMessageDialog(this, "Este caso ya fue atendido anteriormente (vinculado a " + r.getCodigoAnimalVinculado() + ").");
+        return;
+        }
         String codigoAnimalExistente = JOptionPane.showInputDialog(this,
                 "Si ya existe un animal registrado para este caso, indique su código.\nSi no existe, deje vacío para crear uno nuevo:");
         if (codigoAnimalExistente == null) return;

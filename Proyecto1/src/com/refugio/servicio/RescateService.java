@@ -33,10 +33,11 @@ public class RescateService {
     public boolean vincularAnimal(String codigoRescate, String codigoAnimal) {
         Rescate r = buscarPorCodigo(codigoRescate);
         if (r == null) return false;
+        if (r.getEstado().equals("ATENDIDO")) return false;
         r.setCodigoAnimalVinculado(codigoAnimal);
         r.setEstado("ATENDIDO");
         return true;
-    }
+}
 
     /** Codigo de animal sugerido reutilizando el mismo consecutivo del rescate (R-009 -> A-009). */
     public String codigoAnimalSugerido(String codigoRescate) {
