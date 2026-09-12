@@ -28,10 +28,10 @@ public class PanelAnimales extends JPanel {
         form.add(new JLabel("Estado clínico:")); form.add(cmbEstadoClinico);
 
         JPanel botones = new JPanel();
-        JButton btnRegistrar = new JButton("Registrar (código automático)");
+        JButton btnRegistrar = new JButton("Registrar");
         JButton btnBuscar = new JButton("Buscar por código");
         JButton btnEditarEstado = new JButton("Actualizar estado clínico");
-        JButton btnEliminar = new JButton("Eliminar (baja lógica)");
+        JButton btnEliminar = new JButton("Eliminar");
         JButton btnListar = new JButton("Listar activos");
         botones.add(btnRegistrar); botones.add(btnBuscar);
         botones.add(btnEditarEstado); botones.add(btnEliminar); botones.add(btnListar);

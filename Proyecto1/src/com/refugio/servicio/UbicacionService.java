@@ -2,9 +2,6 @@ package com.refugio.servicio;
 
 /**
  * Panel de ubicaciones del refugio, representado con una MATRIZ.
- * Fila 0 = Zona Perros, Fila 1 = Zona Gatos.
- * Cada fila tiene COLUMNAS espacios; cada espacio guarda el codigo del animal o "" si esta libre.
- * Dimensiones documentadas: 2 filas x 5 columnas => capacidad total 10 animales (5 por zona).
  */
 public class UbicacionService {
     public static final int FILAS = 2;
