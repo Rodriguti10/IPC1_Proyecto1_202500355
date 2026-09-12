@@ -126,8 +126,11 @@ reconocibles pero un poco imprecisos en tamaños pequeños (18px, el tamaño de
 las pestañas). Los íconos de Material Symbols están diseñados y optimizados
 específicamente para verse nítidos en tamaños de interfaz pequeños.
 
-## 8. Diagramas pendientes de crear (para el manual técnico entregable)
-Debes dibujar tú mismo (o pedírmelo aparte) estos 3 diagramas que pide la rúbrica:
+## 8. Diagramas (completos)
+
+Los 3 diagramas que pide la rúbrica ya están terminados y entregados en el
+archivo `Diagramas.pdf` (en la raíz de esta carpeta `Proyecto1`):
+
 - Diagrama de flujo del menú principal (Login → MainFrame → Pestañas).
 - Diagrama de módulos (paquetes: modelo/servicio/bitacora/persistencia/reportes/gui).
 - Diagrama de la matriz de ubicaciones (2x5, con nombres de zona).
