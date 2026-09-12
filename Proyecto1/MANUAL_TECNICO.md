@@ -106,13 +106,25 @@ sin usar ningún editor visual ni librería externa:
   de imagen: son instrucciones de dibujo, por lo que no hay que cargar ni
   distribuir ningún `.png`/`.jpg`, y no hay ningún tema de derechos de autor.
 
-**Por qué se hizo así y no con imágenes descargadas de internet**: el
-enunciado exige que la interfaz se construya "únicamente mediante código
-Java Swing" y prohíbe editores visuales. Usar imágenes de internet además
-metería archivos externos al proyecto y posibles problemas de licencia.
-Dibujar los íconos con `Graphics2D` cumple la letra y el espíritu del
-requisito, y es más fácil de explicar en la defensa ("¿cómo se dibuja la
-pata? — son 5 óvalos superpuestos calculados a partir del tamaño del ícono").
+**Actualización (viernes)**: los íconos dibujados a mano con `Graphics2D` se
+reemplazaron por íconos reales de **Material Symbols de Google** (licencia
+Apache 2.0 — uso y redistribución libres, sin necesidad de atribución). Se
+generaron como archivos PNG (en dos colores: blanco y azul, los únicos que
+usa la aplicación) usando un script de conversión SVG→PNG **fuera** del
+proyecto Java, y se incluyeron como recursos dentro de
+`src/com/refugio/gui/recursos/`. En tiempo de ejecución, `IconoSimple` los
+carga con `getClass().getResourceAsStream(...)` y `javax.imageio.ImageIO`
+(ambos incluidos en el JDK estándar, sin ninguna librería externa). Esto
+sigue cumpliendo el requisito de "interfaz construida únicamente por código
+Java Swing": no se usó ningún editor visual ni generador de formularios, y
+la aplicación no depende de ninguna librería de terceros para funcionar —
+solo lee archivos de imagen ya generados, igual que carga los datos de
+`data/*.txt`.
+
+**Por qué no se dejaron los íconos dibujados con `Graphics2D`**: se veían
+reconocibles pero un poco imprecisos en tamaños pequeños (18px, el tamaño de
+las pestañas). Los íconos de Material Symbols están diseñados y optimizados
+específicamente para verse nítidos en tamaños de interfaz pequeños.
 
 ## 8. Diagramas pendientes de crear (para el manual técnico entregable)
 Debes dibujar tú mismo (o pedírmelo aparte) estos 3 diagramas que pide la rúbrica:
