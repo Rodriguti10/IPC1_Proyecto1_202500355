@@ -6,7 +6,7 @@ import com.refugio.servicio.AutenticacionService;
 import javax.swing.*;
 import java.awt.*;
 
-/** Ventana de inicio de sesion. Máximo 3 intentos antes de bloquear. */
+/** Ventana de inicio de sesion. Maximo 3 intentos antes de bloquear. */
 public class LoginFrame extends JFrame {
     private AutenticacionService autenticacionService = new AutenticacionService();
     private JTextField txtUsuario;
@@ -17,16 +17,17 @@ public class LoginFrame extends JFrame {
     private JLabel lblMensaje;
 
     public LoginFrame() {
-        setTitle("Centro de Rescate Animal - Inicio de Sesión");
-        setSize(460, 380);
+        setTitle("Centro de Rescate Animal - Inicio de Sesion");
+        setSize(460, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new IconoSimple(IconoSimple.Tipo.PATA, 32, Estilos.PRIMARIO).getImage());
         setLayout(new BorderLayout());
         getContentPane().setBackground(Estilos.FONDO);
 
         JPanel encabezado = Estilos.crearEncabezado(
                 "Centro de Rescate Animal",
-                "Gestión de Refugio y Adopciones",
+                "Gestion de Refugio y Adopciones",
                 new IconoSimple(IconoSimple.Tipo.PATA, 46, Color.WHITE));
         add(encabezado, BorderLayout.NORTH);
 
@@ -60,17 +61,20 @@ public class LoginFrame extends JFrame {
         txtContrasena.setFont(Estilos.FUENTE_NORMAL);
         gbc.gridx = 1;
         formulario.add(txtContrasena, gbc);
-        echoOriginal = txtContrasena.getEchoChar(); 
-        chkMostrar = new JCheckBox("Mostrar contraseña"); 
-        chkMostrar.setOpaque(false); 
-        chkMostrar.addActionListener(e -> { 
-            if (chkMostrar.isSelected()) { 
-                txtContrasena.setEchoChar((char) 0); } 
-            else { 
-                txtContrasena.setEchoChar(echoOriginal); 
-            } 
-        }); 
-        gbc.gridx = 1; gbc.gridy = 3; formulario.add(chkMostrar, gbc); 
+
+        // Casilla para mostrar/ocultar la contrasena en claro.
+        echoOriginal = txtContrasena.getEchoChar();
+        chkMostrar = new JCheckBox("Mostrar contraseña");
+        chkMostrar.setOpaque(false);
+        chkMostrar.addActionListener(e -> {
+            if (chkMostrar.isSelected()) {
+                txtContrasena.setEchoChar((char) 0);
+            } else {
+                txtContrasena.setEchoChar(echoOriginal);
+            }
+        });
+        gbc.gridx = 1; gbc.gridy = 3;
+        formulario.add(chkMostrar, gbc);
 
         btnIngresar = new JButton("Ingresar");
         Estilos.estilizarBotonPrimario(btnIngresar);
@@ -107,13 +111,13 @@ public class LoginFrame extends JFrame {
         if (resultado.equals("OK")) {
             ContextoApp.usuarioActual = usuario;
             ContextoApp.rolActual = autenticacionService.getRolActual();
-            ContextoApp.bitacora.registrarAccion(usuario, "AUTENTICACION", "LOGIN_OK", "Inicio de sesión correcto");
+            ContextoApp.bitacora.registrarAccion(usuario, "AUTENTICACION", "LOGIN_OK", "Inicio de sesion correcto");
             PersistenciaUtil.cargarTodo();
             dispose();
             new MainFrame();
         } else if (resultado.equals("BLOQUEADO")) {
             ContextoApp.bitacora.registrarError(usuario.isEmpty() ? "desconocido" : usuario, "AUTENTICACION",
-                    "LOGIN_FALLIDO", "Sesión bloqueada tras 3 intentos");
+                    "LOGIN_FALLIDO", "Sesion bloqueada tras 3 intentos");
             lblMensaje.setText("Sesión bloqueada, reinicie la aplicación");
             btnIngresar.setEnabled(false);
         } else {

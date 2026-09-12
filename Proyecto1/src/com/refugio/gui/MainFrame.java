@@ -14,6 +14,7 @@ public class MainFrame extends JFrame {
         setSize(1000, 640);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setIconImage(new IconoSimple(IconoSimple.Tipo.PATA, 32, Estilos.PRIMARIO).getImage());
         setLayout(new BorderLayout());
 
         JPanel encabezado = Estilos.crearEncabezado(

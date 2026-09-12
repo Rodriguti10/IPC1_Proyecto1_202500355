@@ -1,25 +1,57 @@
 package com.refugio.gui;
 
 import javax.swing.Icon;
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * Iconos vectoriales dibujados por codigo con Graphics2D (sin archivos de imagen
- * externos, sin descargas de internet, sin problemas de derechos de autor).
- * Cada tipo dibuja una figura simple reconocible para identificar cada modulo.
+ * Iconos de la interfaz, cargados desde imagenes PNG reales incluidas en el
+ * proyecto (carpeta recursos/). Las imagenes vienen de Material Symbols de
+ * Google (licencia Apache 2.0, uso y redistribucion libres, sin necesidad de
+ * atribucion). Se generaron previamente en dos colores (blanco y azul) para
+ * no depender de ninguna libreria de renderizado de SVG en tiempo de ejecucion:
+ * la aplicacion solo usa javax.imageio (incluido en el JDK) para leer PNG.
  */
 public class IconoSimple implements Icon {
 
     public enum Tipo { PATA, PERSONA, DOCUMENTO, ALERTA, MAPA, GRAFICA, CANDADO }
 
-    private final Tipo tipo;
     private final int size;
-    private final Color color;
+    private Image imagenEscalada;
 
     public IconoSimple(Tipo tipo, int size, Color color) {
-        this.tipo = tipo;
         this.size = size;
-        this.color = color;
+        cargarImagen(tipo, color);
+    }
+
+    private String nombreBase(Tipo tipo) {
+        switch (tipo) {
+            case PATA: return "pata";
+            case PERSONA: return "persona";
+            case DOCUMENTO: return "documento";
+            case ALERTA: return "alerta";
+            case MAPA: return "mapa";
+            case GRAFICA: return "grafica";
+            case CANDADO: return "candado";
+            default: return "pata";
+        }
+    }
+
+    private void cargarImagen(Tipo tipo, Color color) {
+        boolean esBlanco = color != null && color.equals(Color.WHITE);
+        String archivo = "recursos/" + nombreBase(tipo) + (esBlanco ? "_blanco" : "_azul") + ".png";
+        try (InputStream in = getClass().getResourceAsStream(archivo)) {
+            if (in != null) {
+                BufferedImage original = ImageIO.read(in);
+                imagenEscalada = original.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+            }
+        } catch (IOException e) {
+            System.err.println("No se pudo cargar el icono: " + archivo);
+            imagenEscalada = null;
+        }
     }
 
     @Override
@@ -30,77 +62,13 @@ public class IconoSimple implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.translate(x, y);
-        g2.setColor(color);
-        int s = size;
-
-        switch (tipo) {
-            case PATA:
-                double sd = s;
-                int padW = (int) (sd * 0.50);
-                int padH = (int) (sd * 0.38);
-                int padX = (int) ((sd - padW) / 2);
-                int padY = (int) (sd * 0.55);
-                g2.fillOval(padX, padY, padW, padH);
-
-                int toeD = (int) (sd * 0.26);
-                g2.fillOval((int) (sd * 0.00), (int) (sd * 0.28), toeD, toeD);
-                g2.fillOval((int) (sd * 0.24), (int) (sd * 0.02), toeD, toeD);
-                g2.fillOval((int) (sd * 0.50), (int) (sd * 0.02), toeD, toeD);
-                g2.fillOval((int) (sd * 0.74), (int) (sd * 0.28), toeD, toeD);
-                break;
-
-            case PERSONA:
-                g2.fillOval(s * 3 / 8, 0, s / 4, s / 4);
-                g2.fillArc(s / 6, s * 2 / 5, s * 2 / 3, s * 3 / 5, 0, 180);
-                break;
-
-            case DOCUMENTO:
-                g2.drawRoundRect(s / 6, 0, s * 2 / 3, s - 2, 4, 4);
-                g2.setStroke(new BasicStroke(2f));
-                for (int i = 1; i <= 3; i++) {
-                    int yy = s * i / 4;
-                    g2.drawLine(s / 6 + 4, yy, s * 5 / 6 - 4, yy);
-                }
-                break;
-
-            case ALERTA:
-                Polygon tri = new Polygon();
-                tri.addPoint(s / 2, 0);
-                tri.addPoint(0, s - 2);
-                tri.addPoint(s - 2, s - 2);
-                g2.fillPolygon(tri);
-                g2.setColor(Color.WHITE);
-                g2.setStroke(new BasicStroke(2f));
-                g2.drawLine(s / 2, s * 2 / 5, s / 2, s * 2 / 3);
-                g2.fillOval(s / 2 - 2, s * 3 / 4, 4, 4);
-                break;
-
-            case MAPA:
-                g2.fillArc(s / 6, 0, s * 2 / 3, s * 2 / 3, 0, 360);
-                Polygon pin = new Polygon();
-                pin.addPoint(s * 2 / 5, s / 2);
-                pin.addPoint(s * 3 / 5, s / 2);
-                pin.addPoint(s / 2, s - 2);
-                g2.fillPolygon(pin);
-                g2.setColor(Color.WHITE);
-                g2.fillOval(s * 3 / 8, s / 8, s / 4, s / 4);
-                break;
-
-            case GRAFICA:
-                g2.fillRect(s / 8, s / 2, s / 6, s / 2 - 2);
-                g2.fillRect(s * 3 / 8, s / 4, s / 6, s * 3 / 4 - 2);
-                g2.fillRect(s * 6 / 8 - 2, 0, s / 6, s - 2);
-                break;
-
-            case CANDADO:
-                g2.setStroke(new BasicStroke(3f));
-                g2.drawArc(s / 4, 0, s / 2, s / 2, 0, 180);
-                g2.fillRoundRect(s / 8, s * 2 / 5, s * 3 / 4, s * 3 / 5, 6, 6);
-                break;
+        if (imagenEscalada != null) {
+            g.drawImage(imagenEscalada, x, y, null);
         }
-        g2.dispose();
+    }
+
+    /** Devuelve la imagen ya cargada (util para setIconImage() de una ventana). */
+    public Image getImage() {
+        return imagenEscalada;
     }
 }
